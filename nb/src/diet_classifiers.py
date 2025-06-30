@@ -72,7 +72,8 @@ def to_list(lst):
     If the input is a JSON-formatted string (e.g., '["item1", "item2"]'),
     it will be parsed into a list.
     """
-    lst = re.findall(r"'([^']*)'", lst)
+    if type(lst)==str:
+        return re.findall(r"'([^']*)'", lst)
     return lst
 
 
