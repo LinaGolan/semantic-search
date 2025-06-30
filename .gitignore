@@ -179,3 +179,4 @@ web/data/*.ipynb
 tmp.py
 internal/*
 .indexed
+.env

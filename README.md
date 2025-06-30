@@ -1,75 +1,57 @@
-# 🥑 Search By Ingredients Challenge
-![Argmax](https://argmaxml.com/wp-content/uploads/2024/04/Argmax_logo_inline.svg)
+# Semantic Ingredient Classifier
 
-🗓 Submission Deadline: June 30th, 2025
+This is my solution to the search_by_ingredient challenge focused on classifying recipe ingredients as **keto** and **vegan**.
 
+---
 
-🎥 Please watch [this explainer video](https://youtu.be/rfdaZXseRro) to understand the task.
+## 🧠 Solution Overview
 
-## 👋 Who Is This Repo For?
+The solution is divided into two main parts:
 
-[Argmax](https://www.argmaxml.com) is hiring Junior Data scientists in Israel (TLV) and the United States (NYC area).
-This repo is meant to be a the first step in the process and it will set the stage for the interview.
+### 1. Dataset Creation
+To build a reliable and semantically rich dataset of ingredients:
 
-The data is taken from a real-life scenario, and it reflects the type of work you will do at Argmax.
+- **Extracting Ingredients:** I parsed all ingredients from the OpenSearch database, and used an LLM (GPT) to extract **only the ingredient names**, removing any measurements or quantities.
+- **Labeling Ingredients:** For each unique ingredient, I queried GPT (with web search enabled) to determine:
+  - ✅ Is it keto?
+  - 🌱 Is it vegan?
 
+- **Embedding:** Once labeled, each ingredient was transformed into a vector using an **embedding model**, to allow for semantic similarity searches.
 
-## 💼 About the Position
+This process resulted in a high-quality, labeled, and embedded ingredient dataset.
 
-Argmax is a boutique consulting firm specializing in personalized search and recommendation systems. We work with medium to large-scale clients across retail, advertising, healthcare, and finance.
+---
 
-We use tools like large language models, vector databases, and behavioral data to build personalization systems that actually deliver results.
+### 2. Semantic Search Classification
 
-We're looking for candidates who are:
+When classifying new ingredients from a recipe:
 
--	✅ Proficient in Python
--	🔍 Naturally curious
--	🧠 Able to perform independent research
+1. Each new ingredient is embedded using the same embedding model.
+2. A **cosine similarity** search is performed against the labeled dataset.
+3. The closest match is selected, and its `is_keto` and `is_vegan` values are returned as the classification result.
 
-This challenge is designed to simulate the type of problems you'll tackle with us, and it applies to positions in both our:
--	🇮🇱 Ramat Gan, Israel office
--	🇺🇸 North Bergen County, New Jersey office
+This approach supports fuzzy matching, even for non-identical or slightly varied ingredient names.
 
-## 🎥 Past Project Talks
+---
 
-1. [Uri's talk on Persona based evaluation with large language models](https://www.youtube.com/watch?v=44--JTG0aMg)
-1. [Benjamin Kempinski on offline metrics](https://www.youtube.com/watch?v=5OPa2RYL5VI)
-1. [Daniel Hen & Uri Goren on pricing with contextual bandits](https://www.youtube.com/watch?v=IJtNBbINKbI)
-1. [Eitan Zimmerman's talk on visual feed reranking](https://www.youtube.com/watch?v=q4uF8nF5SWk)
+## ⚙️ Technologies Used
 
-## 🚀 Getting Started
+- **Python**
+- **OpenSearch** (for original ingredient data)
+- **OpenAI GPT** (for ingredient parsing and web-aided dietary classification)
+- **Embedding Model** (e.g., `sentence-transformers`)
+- **Cosine Similarity** (for semantic search)
 
-### 🛠️ Setup
+---
 
-1.	Make sure Docker is installed on your machine.
-1.	Run the following in your terminal:  `docker compose build` and  `docker compose up -d`
-1. Open your browser and go to [localhost:8888](http://localhost:8888)
-1. Follow the instructions in the [task.ipynb](https://github.com/argmaxml/search_by_ingredients/blob/master/nb/src/task.ipynb) notebook
+## 🚀 Improvements & Future Work
 
-### 📬 Submission Instructions
+With more time and resources, I would explore the following enhancements to improve accuracy, performance, and dataset quality:
 
-1. **Clone** this repository into a **private GitHub repo** under your own account.
-1. **Invite** [argmax2025](https://github.com/argmax2025) as a collaborator.
-1. **Implement** the missing parts in the codebase.
-1. Once done, fill in the application form:
-1.1. [US Application Form](https://forms.clickup.com/25655193/f/rexwt-1832/L0YE9OKG2FQIC3AYRR) 
-1.1 [IL Application Form](https://forms.clickup.com/25655193/f/rexwt-1812/IP26WXR9X4P6I4LGQ6)
-1. We'll reach out to you after reviewing your submission.
-
-## 🧪 The Interview Process
-### 🧑‍💻 Hands-On Technical Interview (July 2025)
-
-1.	A 3-hour live coding session focused on your submitted solution.
-1.	You'll be asked to extend, modify, and explain parts of the codebase.
-1.	Please ensure you're in a quiet space with a workstation capable of running your solution.
-
-### 🏢 On-Site Interview (August-September 2025)
-
-1. A non-technical, in-person meeting at our offices in Ramat Gan or New Jersey.
-1. We’ll get to know you and discuss your goals.
-1. Successful candidates will receive offers around late August or early September.
-
-## ❓ Still Have Questions?
-
-Feel free to mail us at [challenge25@argmaxml.com](mailto:challenge25@argmaxml.com)
-
+- **Augment Dataset from External Sources:** Enrich the ingredient set by crawling structured data from external sources or leveraging curated datasets from platforms like [Kaggle](https://www.kaggle.com/) or USDA FoodData Central.
+- **Benchmark Multiple Embedding Models:** Test alternative embedding models such as `OpenAI`, `SentenceTransformers`, `Cohere`, or `Instructor-XL` to determine which best captures ingredient semantics.
+- **Cross-Validate Using LLMs:** Use multiple phrased prompts or ensemble-style querying with LLMs to reduce hallucinations and improve labeling reliability.
+- **Add Manual or Heuristic Checks:** Incorporate simple rules (e.g., if the ingredient contains "bacon", it's not vegan) to catch common classification mistakes.
+- **Improve Classification Confidence:** Use similarity thresholds or add confidence scores to indicate uncertain matches.
+- **Expand Dietary Labels:** Extend support to additional dietary categories such as `gluten-free`, `low-carb`, and `paleo`.
+- **Optimize and Scale the Pipeline:** Refactor the system into a modular, scalable pipeline capable of handling large datasets efficiently, with async batching and better resource utilization.
