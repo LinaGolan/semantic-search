@@ -51,3 +51,4 @@ With more time and resources, I would explore the following enhancements to impr
 - **Augment Dataset from External Sources:** Enrich the ingredient set by crawling structured data from external sources or leveraging curated datasets from platforms like [Kaggle](https://www.kaggle.com/) or USDA FoodData Central.
 - **Benchmark Multiple Embedding Models:** Test alternative embedding models such as `OpenAI`, `Cohere`, or `Instructor-XL` to determine which best captures ingredient semantics.
 - **Cross-Validate Using LLMs:** Use multiple phrased prompts or ensemble-style querying with LLMs to reduce hallucinations and improve labeling reliability.
+
