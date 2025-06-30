@@ -12,8 +12,8 @@ The solution is divided into two main parts:
 To build a reliable and semantically rich dataset of ingredients:
 
 - **Extracting Ingredients:** I parsed all ingredients from the OpenSearch database, and used an LLM (GPT) to extract **only the ingredient names**, removing any measurements or quantities.
-- **Labeling Ingredients:** For each unique ingredient, I queried GPT (with web search enabled) to determine:
-  - ✅ Is it keto?
+- **Labeling Ingredients:** For each unique ingredient, I queried GPT (with web search tool) to determine:
+  - ✅ Is it keto? (<= 10g of carbohydrate per 100g)
   - 🌱 Is it vegan?
 
 - **Embedding:** Once labeled, each ingredient was transformed into a vector using an **embedding model**, to allow for semantic similarity searches.
@@ -22,7 +22,7 @@ This process resulted in a high-quality, labeled, and embedded ingredient datase
 
 ---
 
-### 2. Semantic Search Classification
+### 2. Semantic Search & Classification
 
 When classifying new ingredients from a recipe:
 
@@ -39,7 +39,7 @@ This approach supports fuzzy matching, even for non-identical or slightly varied
 - **Python**
 - **OpenSearch** (for original ingredient data)
 - **OpenAI GPT** (for ingredient parsing and web-aided dietary classification)
-- **Embedding Model** (e.g., `sentence-transformers`)
+- **Embedding Model** (sentence-transformers)
 - **Cosine Similarity** (for semantic search)
 
 ---
@@ -51,7 +51,3 @@ With more time and resources, I would explore the following enhancements to impr
 - **Augment Dataset from External Sources:** Enrich the ingredient set by crawling structured data from external sources or leveraging curated datasets from platforms like [Kaggle](https://www.kaggle.com/) or USDA FoodData Central.
 - **Benchmark Multiple Embedding Models:** Test alternative embedding models such as `OpenAI`, `SentenceTransformers`, `Cohere`, or `Instructor-XL` to determine which best captures ingredient semantics.
 - **Cross-Validate Using LLMs:** Use multiple phrased prompts or ensemble-style querying with LLMs to reduce hallucinations and improve labeling reliability.
-- **Add Manual or Heuristic Checks:** Incorporate simple rules (e.g., if the ingredient contains "bacon", it's not vegan) to catch common classification mistakes.
-- **Improve Classification Confidence:** Use similarity thresholds or add confidence scores to indicate uncertain matches.
-- **Expand Dietary Labels:** Extend support to additional dietary categories such as `gluten-free`, `low-carb`, and `paleo`.
-- **Optimize and Scale the Pipeline:** Refactor the system into a modular, scalable pipeline capable of handling large datasets efficiently, with async batching and better resource utilization.
