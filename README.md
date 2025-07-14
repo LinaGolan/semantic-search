@@ -1,8 +1,6 @@
-Semantic Ingredient Classifier
-A solution to the Argmax "Search by Ingredients" Challenge
-
+# Semantic Ingredient Classifier
 This repository contains my independent solution to the Search by Ingredients challenge hosted by Argmax. The task involved building a system to classify recipe ingredients as keto and vegan, using semantic understanding and machine learning techniques.
----
+
 
 ## 🧠 Solution Overview
 
